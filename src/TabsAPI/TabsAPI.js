@@ -19,3 +19,5 @@ export const getAllTabsInCurrentWindow = () => (
 export const closeTabs = (tabIds) => {
     chrome.tabs.remove(tabIds);
 };
+
+export const getFavIcon = 2;

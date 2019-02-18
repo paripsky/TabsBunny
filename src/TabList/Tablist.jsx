@@ -1,54 +1,38 @@
-import React, { useState, useEffect } from 'react';
-// import Tab from './Tab';
-import { getAllTabsInCurrentWindow, closeTabs as closeChromeTabs } from '../TabsAPI';
+import React from 'react';
+import PropTypes from 'prop-types';
 import './Tablist.css';
+import TabManager from '../Managers/TabManager';
 
-function TabList() {
-    const [tabs, setTabs] = useState([]);
-    const [selectedTabs, setSelectedTabs] = useState([]);
+const appIcon = require('../../assets/icon.png');
 
-    useEffect(() => {
-        getAllTabsInCurrentWindow().then(tabsInWindow => setTabs(tabsInWindow));
-    }, []);
-
+function TabList({ tabs }) {
     function toggleTab(tabId) {
         return () => {
-            if (selectedTabs.includes(tabId)) {
-                setSelectedTabs(selectedTabs.filter(selectedTabId => selectedTabId !== tabId));
-            } else {
-                setSelectedTabs([
-                    ...selectedTabs,
-                    tabId,
-                ]);
-            }
+            TabManager.toggleSelection(tabId);
         };
     }
 
-    function closeTabs() {
-        console.log(`closed ${selectedTabs}`);
-        closeChromeTabs(selectedTabs);
-        setTabs(tabs.filter(tab => !selectedTabs.includes(tab.id)));
-        setSelectedTabs([]);
-    }
-
     return (
-        <React.Fragment>
-            <button type="button" className="close-tabs-button" onClick={closeTabs}>Close Tabs</button>
-            <ul className="tab-list">
-                {tabs.map(({ id, title }) => (
-                    <li key={id}>
-                        <label className="tab-label" htmlFor={`tab-checkbox-${id}`} id={`tab-${id}`}>
-                            <input type="checkbox" id={`tab-checkbox-${id}`} onChange={toggleTab(id)} />
-                            {title}
-                        </label>
-                    </li>
-                ))}
-            </ul>
-        </React.Fragment>
+        <ul className="tab-list">
+            {tabs.map(({ id, title, favIconUrl }) => (
+                <li className="tab-list-item" key={id}>
+                    <label className="tab-label" htmlFor={`tab-checkbox-${id}`} id={`tab-${id}`}>
+                        <img className="tab-fav-icon" src={favIconUrl || appIcon} alt="" />
+                        <input type="checkbox" id={`tab-checkbox-${id}`} onChange={toggleTab(id)} />
+                        {title}
+                    </label>
+                </li>
+            ))}
+        </ul>
     );
 }
 
 TabList.propTypes = {
+    tabs: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        favIconUrl: PropTypes.string,
+    })).isRequired,
 };
 
 export default TabList;
