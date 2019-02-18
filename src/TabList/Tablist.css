@@ -1,0 +1,16 @@
+.close-tabs-button {
+    position: sticky;
+    top: 0;
+}
+
+.tab-list {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0px 4px 0px;
+}
+
+.tab-label {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}

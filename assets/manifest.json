@@ -1,0 +1,14 @@
+{
+  "name": "TabsBunny",
+  "version": "1.0",
+  "description": "A tab manager.",
+  "permissions": [
+    "tabs", "chrome://favicon/*"
+  ],
+  "browser_action": {
+      "default_title": "TabsBunny",
+      "default_icon": "icon.png",
+      "default_popup": "popup.html"
+  },
+  "manifest_version": 2
+}
